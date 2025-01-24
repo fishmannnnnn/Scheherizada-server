@@ -1,11 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
-export const Words: CollectionConfig = {
-  slug: 'words',
+export const WordsFree: CollectionConfig = {
+  slug: 'words_free',
   access: {
     read: () => true,
   },
-  labels: { singular: 'Word', plural: 'Words' },
+  labels: { singular: 'WordFree', plural: 'WordsFree' },
   fields: [
     {
       name: 'word',

@@ -14,9 +14,11 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    words: Word;
     customers: Customer;
     tariff_plans: TariffPlan;
+    words_free: WordsFree;
+    words_paid: WordsPaid;
+    words_trigger: WordsTrigger;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,9 +27,11 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    words: WordsSelect<false> | WordsSelect<true>;
     customers: CustomersSelect<false> | CustomersSelect<true>;
     tariff_plans: TariffPlansSelect<false> | TariffPlansSelect<true>;
+    words_free: WordsFreeSelect<false> | WordsFreeSelect<true>;
+    words_paid: WordsPaidSelect<false> | WordsPaidSelect<true>;
+    words_trigger: WordsTriggerSelect<false> | WordsTriggerSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -124,23 +128,13 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "words".
- */
-export interface Word {
-  id: string;
-  word: string;
-  hash: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "customers".
  */
 export interface Customer {
   id: string;
   role?: ('standardUser' | 'subaccount') | null;
   tariffPlan?: (string | null) | TariffPlan;
+  hasRequestedTriggerWords?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -174,6 +168,39 @@ export interface TariffPlan {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_free".
+ */
+export interface WordsFree {
+  id: string;
+  word: string;
+  hash: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_paid".
+ */
+export interface WordsPaid {
+  id: string;
+  word: string;
+  hash: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_trigger".
+ */
+export interface WordsTrigger {
+  id: string;
+  word: string;
+  hash: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -188,16 +215,24 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'words';
-        value: string | Word;
-      } | null)
-    | ({
         relationTo: 'customers';
         value: string | Customer;
       } | null)
     | ({
         relationTo: 'tariff_plans';
         value: string | TariffPlan;
+      } | null)
+    | ({
+        relationTo: 'words_free';
+        value: string | WordsFree;
+      } | null)
+    | ({
+        relationTo: 'words_paid';
+        value: string | WordsPaid;
+      } | null)
+    | ({
+        relationTo: 'words_trigger';
+        value: string | WordsTrigger;
       } | null);
   globalSlug?: string | null;
   user:
@@ -286,21 +321,12 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "words_select".
- */
-export interface WordsSelect<T extends boolean = true> {
-  word?: T;
-  hash?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "customers_select".
  */
 export interface CustomersSelect<T extends boolean = true> {
   role?: T;
   tariffPlan?: T;
+  hasRequestedTriggerWords?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -331,6 +357,36 @@ export interface TariffPlansSelect<T extends boolean = true> {
         standardUserPrice?: T;
         subaccountPrice?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_free_select".
+ */
+export interface WordsFreeSelect<T extends boolean = true> {
+  word?: T;
+  hash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_paid_select".
+ */
+export interface WordsPaidSelect<T extends boolean = true> {
+  word?: T;
+  hash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "words_trigger_select".
+ */
+export interface WordsTriggerSelect<T extends boolean = true> {
+  word?: T;
+  hash?: T;
   updatedAt?: T;
   createdAt?: T;
 }

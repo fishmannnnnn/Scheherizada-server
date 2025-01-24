@@ -2,6 +2,23 @@ import type { CollectionConfig } from "payload";
 
 export const TariffPlans: CollectionConfig = {
 	slug: "tariff_plans",
+	labels: { singular: "Tariff Plan", plural: "Tariff Plans" },
+	access: {
+        // only admins can permorm CUD operations
+		create: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		read: () => true,
+		update: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		delete: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+	},
 	admin: {
 		useAsTitle: "name",
 	},
@@ -51,5 +68,4 @@ export const TariffPlans: CollectionConfig = {
 			],
 		},
 	],
-	labels: { singular: "Tariff Plan", plural: "Tariff Plans" },
 };

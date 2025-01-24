@@ -1,6 +1,5 @@
 import { BASE_FRONTEND_URL } from "@/payload.config";
 import type { CollectionConfig } from "payload";
-import { TariffPlans } from "./TariffPlans";
 
 export const Customers: CollectionConfig = {
 	slug: "customers",
@@ -23,8 +22,18 @@ export const Customers: CollectionConfig = {
 			type: "relationship",
 			relationTo: "tariff_plans",
 		},
+		{
+			name: "hasRequestedTriggerWords",
+			type: "checkbox",
+			defaultValue: false,
+			admin: {
+				condition: (_, { role }) => role === "subaccount",
+			},
+		},
 	],
 	access: {
+		// only admins can permorm UD operations, everyone can create
+        // and only admins or the user(only him related data) can read
 		create: () => true,
 		read: ({ req: { user } }) => {
 			if (!user) return false; // Deny access if not authenticated
@@ -34,6 +43,14 @@ export const Customers: CollectionConfig = {
 					equals: user.email,
 				},
 			};
+		},
+		update: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		delete: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
 		},
 	},
 	hooks: {
@@ -47,7 +64,7 @@ export const Customers: CollectionConfig = {
 							where: { name: { equals: "free" } },
 							limit: 1,
 						});
-						if (tariffPlan.docs.length > 0) {
+						if (tariffPlan.totalDocs > 0) {
 							data.tariffPlan = tariffPlan.docs[0].id;
 						}
 					}
@@ -57,7 +74,7 @@ export const Customers: CollectionConfig = {
 							where: { name: { equals: "basic" } },
 							limit: 1,
 						});
-						if (tariffPlan.docs.length > 0) {
+						if (tariffPlan.totalDocs > 0) {
 							data.tariffPlan = tariffPlan.docs[0].id;
 						}
 					}

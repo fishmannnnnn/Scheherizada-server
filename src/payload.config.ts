@@ -7,9 +7,11 @@ import { fileURLToPath } from "url";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
-import { Words } from "./collections/Words";
+import { WordsFree } from "./collections/WordsFree";
 import { Customers } from "./collections/Customers";
 import { TariffPlans } from "./collections/TariffPlans";
+import { WordsPaid } from "./collections/WordsPaid";
+import { WordsTrigger } from "./collections/WordsTrigger";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -25,7 +27,15 @@ export default buildConfig({
 			baseDir: path.resolve(dirname),
 		},
 	},
-	collections: [Users, Media, Words, Customers, TariffPlans],
+	collections: [
+		Users,
+		Media,
+		Customers,
+		TariffPlans,
+		WordsFree,
+		WordsPaid,
+		WordsTrigger,
+	],
 	secret: process.env.PAYLOAD_SECRET || "",
 	typescript: {
 		outputFile: path.resolve(dirname, "payload-types.ts"),
