@@ -5,6 +5,25 @@ export const Users: CollectionConfig = {
 	admin: {
 		useAsTitle: "email",
 	},
+	access: {
+		// only admins can permorm CRUD operations
+		create: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		read: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		update: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+		delete: ({ req: { user } }) => {
+			if (user?.collection === "users") return true;
+			return false;
+		},
+	},
 	auth: true,
 	fields: [],
 };
